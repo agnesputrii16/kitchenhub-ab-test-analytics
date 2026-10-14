@@ -57,7 +57,7 @@ for i in range(N_ORDERS):
     })     
 
     df = pd.DataFrame(rows)
-    df.to_csv("D:/kitchen_analysis/kitchenhub_orders.csv", index=False)
+    df.to_csv("kitchenhub_orders.csv", index=False)
 
     print("Data berhasil dibuat!")       
     print(f"Total baris: {len(df)}")

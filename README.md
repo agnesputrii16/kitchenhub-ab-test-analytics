@@ -36,12 +36,12 @@ Main columns: `order_session_id`, `user_id`, `date`, `variant`, `brand`, `platfo
 |---|---|---|
 | 1 | `01_generate_data.py` | Generates the simulated dataset |
 | 2 | `02_explore_data.py` | Checks size, column types, missing values, unique values |
-| 3 | `03_conversion_rate.py` | Conversion rate per variant |
+| 3 | `03_conversion.py` | Conversion rate per variant |
 | 4 | `04_breakdown_platform.py` | Splits the result by platform |
-| 5 | `05_statistical_test.py` | Chi-square test per segment, with Bonferroni check |
+| 5 | `05_statistical.py` | Chi-square test per segment, with Bonferroni check |
 | 6 | `06_funnel_analysis.py` | Funnel drop-off, written in **SQL** (SQLite) |
 | 7 | `07_revenue_metrics.py` | Revenue, average order value, revenue per session |
-| 8 | `08_impact_scenarios.py` | Compares 3 rollout scenarios by estimated monthly revenue |
+| 8 | `08_impact_scenario.py` | Compares 3 rollout scenarios by estimated monthly revenue |
 
 **Tools:** Python (pandas, SciPy), SQL (SQLite).
 
@@ -129,12 +129,12 @@ pip install -r requirements.txt
 # (the random seed is fixed, only the dates change with the day you run it)
 
 python 02_explore_data.py
-python 03_conversion_rate.py
+python 03_conversion.py
 python 04_breakdown_platform.py
-python 05_statistical_test.py
+python 05_statistical.py
 python 06_funnel_analysis.py
 python 07_revenue_metrics.py
-python 08_impact_scenarios.py
+python 08_impact_scenario.py
 ```
 
 ## 8. Possible next steps

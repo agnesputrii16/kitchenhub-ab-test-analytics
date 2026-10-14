@@ -1,7 +1,7 @@
 import pandas as pd
 
 #load data 
-df = pd.read_csv("D:/kitchen_analysis/kitchenhub_orders.csv")
+df = pd.read_csv("kitchenhub_orders.csv")
 
 # 1. cek ukuran data - berapa baris? berapa kolom?
 print("=== Ukuran Data ===")

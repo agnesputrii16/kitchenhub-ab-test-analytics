@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("D:/kitchen_analysis/kitchenhub_orders.csv")
+df = pd.read_csv("kitchenhub_orders.csv")
 
 print("=== conversion per platform x variant ===\n")
 

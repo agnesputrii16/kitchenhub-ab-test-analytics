@@ -1,42 +1,43 @@
 """
-Uji Statistik - Chi-Square Test
-==========================================
-Tujuan: Membuktikan secara matematis, apakah selisih conversion rate
-yang kita lihat itu BENERAN SIGNIFIKAN, atau cuma kebetulan random.
+STEP 5: Statistical test (Chi-Square)
+=======================================
+Is the difference between Variant A and B real, or just random noise?
 
-Aturan: p-value < 0.05 -> signifikan (bisa dipercaya)
-        p-value >= 0.05 -> belum bisa dipastikan (mungkin cuma kebetulan)
+Rule of thumb: p-value < 0.05 -> statistically significant.
+Because we run one test per platform (3 tests), we also show the
+Bonferroni-adjusted threshold: 0.05 / number of tests.
 """
 
 import pandas as pd
-from scipy.stats import chi2_contingency # scipy - library python untuk perhitungan statistik
+from scipy.stats import chi2_contingency
 
-df = pd.read_csv("D:/kitchen_analysis/kitchenhub_orders.csv")
+df = pd.read_csv("kitchenhub_orders.csv")
 
-def uji_signifikansi(data, nama_platform):
-    # Tabel kontingensi: baris = variant, kolom = converted (0/1)
-    tabel = pd.crosstab(data["variant"], data["converted"])
 
-    # Jalankan chi-square test
-    chi2_stat, p_value, dof, expected = chi2_contingency(tabel)
+def significance_test(data, name):
+    table = pd.crosstab(data["variant"], data["converted"])
+    chi2_stat, p_value, dof, expected = chi2_contingency(table)
 
-    print(f"--- {nama_platform} ---")
-    print("Tabel kontingensi:")
-    print(tabel)
+    print(f"--- {name} ---")
+    print("Contingency table:")
+    print(table)
     print(f"Chi-square statistic: {chi2_stat:.4f}")
     print(f"P-value: {p_value:.4f}")
-
     if p_value < 0.05:
-        print(">> SIGNIFIKAN (p < 0.05): Perbedaan ini kemungkinan besar NYATA, bukan kebetulan.")
+        print(">> SIGNIFICANT (p < 0.05)\n")
     else:
-        print(">> TIDAK SIGNIFIKAN (p >= 0.05): Belum cukup bukti untuk bilang ini beda nyata.")
-    print()
+        print(">> NOT significant (p >= 0.05)\n")
+    return p_value
 
 
-# 1. Test untuk keseluruhan data (semua platform digabung)
-uji_signifikansi(df, "KESELURUHAN (semua platform)")
+significance_test(df, "OVERALL (all platforms)")
 
-# 2. Test untuk tiap platform secara terpisah
+platform_p = {}
 for platform in df["platform"].unique():
-    data_platform = df[df["platform"] == platform]
-    uji_signifikansi(data_platform, platform)
+    platform_p[platform] = significance_test(df[df["platform"] == platform], platform)
+
+alpha_bonferroni = 0.05 / len(platform_p)
+print(f"=== Bonferroni check (3 platform tests, adjusted alpha = {alpha_bonferroni:.4f}) ===")
+for platform, p in platform_p.items():
+    status = "still significant" if p < alpha_bonferroni else "NOT significant"
+    print(f"{platform:<12} p = {p:.6f} -> {status}")
